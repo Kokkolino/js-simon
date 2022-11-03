@@ -3,9 +3,11 @@ let numbers = [];
 let guessedNumbers = 0;
 let firstCountdown = 5;
 let countdown;
-
+let timer;
+let timeout;
+let secondsLeft = 5;
 // si deve richiamare la funzione del set setInterval
-document.getElementById('start').addEventListener('click', setIt);
+document.getElementById('start').addEventListener('click', setCountdown);
 document.getElementById('start').addEventListener('click', btnDisappear);
 
 // countdown funzione
@@ -20,7 +22,7 @@ function countFunction() {
     }
 }
 // setInterval separato in un altra funzione
-function setIt(){
+function setCountdown(){
     countdown = setInterval(countFunction, 1000);
 }
 // button disappear
@@ -28,6 +30,7 @@ function btnDisappear(){
     document.getElementById('start').classList.add('d-none');
 }
 
+// game start function
 function gameStart(){
     numbers = [];
     while (numbers.length < 5){
@@ -38,5 +41,53 @@ function gameStart(){
             document.getElementById('displayNumbers').innerHTML += `<span>${x}</span>`;
         }
     }
-    console.log(numbers)
+    if(numbers.length == 5){
+        setTimer();
+        
+    }
+
+
+}
+
+//setInterval game start
+function setTimer(){
+    timer = setInterval(timerFunction, 1000);
+}
+
+function timerFunction(){
+    document.getElementById('displayTimer').innerHTML = `<h1>${secondsLeft}</h1>`;
+    secondsLeft += -1;
+    if(secondsLeft == 0){
+        document.getElementById('displayTimer').innerHTML = "";
+        document.getElementById('displayNumbers').innerHTML = "";
+        guessStart();
+    }
+}
+
+function guessStart(){
+    timeout = setTimeout(guessPhase, 1000);
+}
+
+function guessPhase(){
+    clearInterval(timer);
+    for ( let i = 0; i < 5; i ++ ) {
+        let guess = parseInt(prompt("Quale numero ricordi?"));
+        console.log(guess);
+        if (numbers.includes(guess)){
+            guessedNumbers++;
+            let k = 0;
+            // rimozione numero indovinato
+            do{
+
+                if (guess == numbers[k]){
+                    delete numbers[k];
+                    console.log(numbers);
+                    break;
+                }
+                k++
+            }while(k<5)
+            
+        }
+    }
+    document.getElementById('displayNumbers').innerHTML = `<h1>Hai indovinato ${guessedNumbers} numeri</h1>`
 }
