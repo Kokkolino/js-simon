@@ -1,20 +1,20 @@
 // variables
 let numbers = [];
 let guessedNumbers = 0;
-let firstCountdown = 5;
+let firstCountdown = 6;
 let countdown;
 let timer;
 let timeout;
-let secondsLeft = 5;
+let secondsLeft = 6;
 // si deve richiamare la funzione del set setInterval
 document.getElementById('start').addEventListener('click', setCountdown);
 document.getElementById('start').addEventListener('click', btnDisappear);
 
 // countdown funzione
 function countFunction() {
-    document.getElementById('displayTimer').innerHTML = `<h1>La sfida inizia tra:</h1> <h1>${firstCountdown}</h1>`;
     firstCountdown += -1;
-    if (firstCountdown < 0) {
+    document.getElementById('displayTimer').innerHTML = `<h1>La sfida inizia tra:</h1> <h1>${firstCountdown}</h1>`;
+    if (firstCountdown == 0) {
         document.getElementById('displayTimer').innerHTML = "";
 
         clearInterval(countdown);
@@ -55,11 +55,11 @@ function setTimer(){
 }
 
 function timerFunction(){
-    document.getElementById('displayTimer').innerHTML = `<h1>${secondsLeft}</h1>`;
     secondsLeft += -1;
+    document.getElementById('displayTimer').innerHTML = `<h1>${secondsLeft}</h1>`;
     if(secondsLeft == 0){
         document.getElementById('displayTimer').innerHTML = "";
-        document.getElementById('displayNumbers').innerHTML = "";
+        document.getElementById('displayNumbers').innerHTML = "";    
         guessStart();
     }
 }
@@ -80,14 +80,15 @@ function guessPhase(){
             do{
 
                 if (guess == numbers[k]){
-                    delete numbers[k];
+                    numbers.splice(k, 1);
                     console.log(numbers);
                     break;
                 }
                 k++
-            }while(k<5)
+            }while(k<numbers.length)
             
         }
     }
+    document.getElementById('displayTimer').innerHTML = ``;
     document.getElementById('displayNumbers').innerHTML = `<h1>Hai indovinato ${guessedNumbers} numeri</h1>`
 }
